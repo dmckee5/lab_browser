@@ -1,2 +1,2 @@
 # lab_browser
-A simple GUI example: a web browser
+Daniel McKee (dbm33) and Tina Liang (tl150)
