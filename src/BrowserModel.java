@@ -37,23 +37,23 @@ public class BrowserModel {
     /**
      * Returns the first page in next history, null if next history is empty.
      */
-    public URL next () {
+    public URL next () throws BrowserException{
         if (hasNext()) {
             myCurrentIndex++;
             return myHistory.get(myCurrentIndex);
         }
-        return null;
+        throw new BrowserException("No next page. ");
     }
 
     /**
      * Returns the first page in back history, null if back history is empty.
      */
-    public URL back () {
+    public URL back () throws BrowserException{
         if (hasPrevious()) {
             myCurrentIndex--;
             return myHistory.get(myCurrentIndex);
         }
-        return null;
+        throw new BrowserException("No previous page. ");
     }
 
     /**
@@ -114,12 +114,14 @@ public class BrowserModel {
 
     /**
      * Returns URL from favorites associated with given name, null if none set.
+     * @throws BrowserException 
      */
-    public URL getFavorite (String name) {
+    public URL getFavorite (String name) throws BrowserException {
         if (name != null && !name.equals("") && myFavorites.containsKey(name)) {
             return myFavorites.get(name);
         }
-        return null;
+//        return null;
+        throw new BrowserException("No favorites set.");
     }
 
     // deal with a potentially incomplete URL
@@ -142,4 +144,6 @@ public class BrowserModel {
             }
         }
     }
+    
+   
 }

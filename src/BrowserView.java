@@ -2,6 +2,7 @@ import java.awt.Dimension;
 import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
+
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Worker;
@@ -23,7 +24,9 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.web.WebView;
+
 import javax.imageio.ImageIO;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -126,12 +129,22 @@ public class BrowserView {
 
     // move to the next URL in the history
     private void next () {
-        update(myModel.next());
+        try {
+			update(myModel.next());
+		} catch (BrowserException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
 
     // move to the previous URL in the history
     private void back () {
-        update(myModel.back());
+        try {
+			update(myModel.back());
+		} catch (BrowserException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
 
     // change current URL to the home page, if set
@@ -141,7 +154,12 @@ public class BrowserView {
 
     // change page to favorite choice
     private void showFavorite (String favorite) {
-        showPage(myModel.getFavorite(favorite).toString());
+        try {
+			showPage(myModel.getFavorite(favorite).toString());
+		} catch (BrowserException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
 
     // update just the view to display given URL
@@ -225,6 +243,21 @@ public class BrowserView {
             myModel.setHome();
             enableButtons();
         }));
+        result.getChildren().add(makeButton("AddFavoriteCommand", event -> {      			
+//        	TextInputDialog info = new TextInputDialog();
+//            info.showAndWait();
+//            String name = info.getResult();
+        	addFavorite();
+        	
+        	enableButtons();
+        }));
+        myFavorites = new ComboBox<String>();
+        myFavorites.setOnAction(event -> {
+        	
+        	showFavorite(myFavorites.getValue());
+        });
+        result.getChildren().add(myFavorites);
+        
         return result;
     }
 
